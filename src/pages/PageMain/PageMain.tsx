@@ -2,21 +2,13 @@ import { useEffect, useState } from "react";
 import { FilterBlock } from "../../components/FilterBlock/FilterBlock";
 import Loader from "../../components/Loader/Loader";
 import { ProductCard } from "../../components/ProductCard/ProductCard";
+import { getFilter, getIds, getItemObj, getItems } from "../../utils/functions";
+import { logMe } from "../../utils/testFunctions";
 import {
-    getFields,
-    getFilter,
-    getIds,
-    getItemObj,
-    getItems,
-} from "../../utils/functions";
-import {
-    DefItemSet,
     FieldExtNone,
     IntItem,
-    IntItemSet,
     TypeField,
     TypeFieldExt,
-    TypeIds,
 } from "../../utils/types";
 import {
     BtnPage,
@@ -24,6 +16,8 @@ import {
     CardsContainer,
     CardsPage,
     Div,
+    DivEmpty,
+    EmptyDesc,
     Filters,
     FiltersControls,
     FiltersNotAccepted,
@@ -50,16 +44,9 @@ export const PageMain = () => {
         getItems(ids, setError).then((data) => {
             let obj: IntItem[] = [];
             if (data && data.result) {
-                console.log("data.result", data.result);
+                logMe("data.result", data.result);
                 obj = getItemObj(data.result).slice(0, 50);
                 setIds(obj);
-
-                console.log("obj data", obj);
-
-                // localStorage.setItem(
-                //     "valantis_items",
-                //     JSON.stringify(data.result),
-                // );
                 setLoading(false);
             } else {
                 setLoading(false);
@@ -216,7 +203,7 @@ export const PageMain = () => {
                     </FiltersSubmit>
                 </FiltersControls>
             </Filters>
-            {ids.length > 0 && (
+            {ids.length > 0 ? (
                 <>
                     <CardsPage>Страница №{page + 1}</CardsPage>
                     <CardsContainer>
@@ -258,6 +245,13 @@ export const PageMain = () => {
                         </BtnPage>
                     </CardsContainer>
                 </>
+            ) : (
+                <DivEmpty>
+                    <div>Нет элементов для отображения!</div>
+                    <EmptyDesc>
+                        Попробуйте другие параметры фильтрации
+                    </EmptyDesc>
+                </DivEmpty>
             )}
         </Div>
     );

@@ -1,4 +1,5 @@
 import { md5 } from "js-md5";
+import { logMe } from "./testFunctions";
 import {
     DefItemCnt,
     IntData,
@@ -43,14 +44,14 @@ export const getIds = (
         body: JSON.stringify(data),
     })
         .then((response) => {
-            console.log("ids response", response);
+            logMe("ids response", response);
             if (response.ok) {
                 return response.json();
             }
             throw new Error("IDS Response " + response.statusText);
         })
         .then((data) => {
-            console.log("ids data", data);
+            logMe("ids data", data);
             if (data && !data.message) {
                 const typedData = data as IntData<TypeIds>;
                 return typedData;
@@ -81,14 +82,14 @@ export const getItems = (ids: string[], setRequestError: () => void) => {
         body: JSON.stringify(data),
     })
         .then((response) => {
-            console.log("items response", response);
+            logMe("items response", response);
             if (response.ok) {
                 return response.json();
             }
             throw new Error("Items Response " + response.statusText);
         })
         .then((data) => {
-            console.log("items data", data);
+            logMe("items data", data);
             if (!data.message) {
                 const typedData = data as IntData<IntItem[]>;
                 return typedData;
@@ -125,7 +126,7 @@ export const getFields = (
             dataParams) ||
         dataWoParams;
 
-    console.log(data);
+    logMe(data);
     fetch(`http://api.valantis.store:40000/`, {
         method: "POST",
         headers: {
@@ -141,7 +142,7 @@ export const getFields = (
             throw new Error("Response ERROR:" + response.statusText);
         })
         .then((data) => {
-            console.log(data);
+            logMe(data);
         })
         .catch((error) => {
             console.log(error);
@@ -159,7 +160,7 @@ export const getFilter = (
         params: { [field]: value },
     };
 
-    console.log("filter params", data);
+    logMe("filter params", data);
 
     return fetch(`http://api.valantis.store:40000/`, {
         method: "POST",
@@ -170,14 +171,14 @@ export const getFilter = (
         body: JSON.stringify(data),
     })
         .then((response) => {
-            console.log("filter response", response);
+            logMe("filter response", response);
             if (response.ok) {
                 return response.json();
             }
             throw new Error("filter Response " + response.statusText);
         })
         .then((data) => {
-            console.log(data);
+            logMe(data);
             return data;
         })
         .catch((error) => {
