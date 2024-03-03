@@ -24,7 +24,11 @@ const getAuth = () => {
     return md5(`${password}_${myDate}`);
 };
 
-export const getIds = (offset: number, limit: number) => {
+export const getIds = (
+    offset: number,
+    limit: number,
+    setRequestError: () => void,
+) => {
     const data = {
         action: "get_ids",
         params: { offset: offset, limit: limit },
@@ -58,10 +62,11 @@ export const getIds = (offset: number, limit: number) => {
         })
         .catch((error) => {
             console.log(error);
+            setRequestError();
         });
 };
 
-export const getItems = (ids: string[]) => {
+export const getItems = (ids: string[], setRequestError: () => void) => {
     const data = {
         action: "get_items",
         params: { ids: ids },
@@ -95,10 +100,12 @@ export const getItems = (ids: string[]) => {
         })
         .catch((error) => {
             console.log(error);
+            setRequestError();
         });
 };
 
 export const getFields = (
+    setRequestError: () => void,
     field?: TypeField,
     offset?: number,
     limit?: number,
@@ -138,21 +145,23 @@ export const getFields = (
         })
         .catch((error) => {
             console.log(error);
+            setRequestError();
         });
 };
 
 export const getFilter = (
     field: TypeField,
-    value: string | number | bigint,
+    value: number | string,
+    setRequestError: () => void,
 ) => {
     const data = {
         action: "filter",
         params: { [field]: value },
     };
 
-    console.log(data);
+    console.log("filter params", data);
 
-    fetch(`http://api.valantis.store:40000/`, {
+    return fetch(`http://api.valantis.store:40000/`, {
         method: "POST",
         headers: {
             "content-type": "application/json",
@@ -161,10 +170,19 @@ export const getFilter = (
         body: JSON.stringify(data),
     })
         .then((response) => {
-            return response.json();
+            console.log("filter response", response);
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error("filter Response " + response.statusText);
         })
         .then((data) => {
             console.log(data);
+            return data;
+        })
+        .catch((error) => {
+            console.log(error);
+            setRequestError();
         });
 };
 

@@ -1,4 +1,9 @@
 export type TypeField = "product" | "price" | "brand";
+export const FieldProduct: TypeField = "product";
+export const FieldPrice: TypeField = "price";
+export const FieldBrand: TypeField = "brand";
+export type TypeFieldExt = TypeField | "none";
+export const FieldExtNone = "none";
 
 export type TypeIds = string[];
 
