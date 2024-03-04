@@ -35,7 +35,7 @@ export const getIds = (
         params: { offset: offset, limit: limit },
     };
 
-    return fetch(`http://api.valantis.store:40000/`, {
+    return fetch(`https://api.valantis.store:41000/`, {
         method: "POST",
         headers: {
             "content-type": "application/json",
