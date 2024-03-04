@@ -14,6 +14,8 @@ const add0toDate = (val: string | number) => {
     return +val < 10 ? "0" + val : "" + val;
 };
 
+const URL_VALANTIS = `https://api.valantis.store:41000/`;
+
 const getAuth = () => {
     const date = new Date();
     const month = add0toDate(date.getMonth() + 1);
@@ -35,7 +37,7 @@ export const getIds = (
         params: { offset: offset, limit: limit },
     };
 
-    return fetch(`https://api.valantis.store:41000/`, {
+    return fetch(`${URL_VALANTIS}`, {
         method: "POST",
         headers: {
             "content-type": "application/json",
@@ -73,7 +75,7 @@ export const getItems = (ids: string[], setRequestError: () => void) => {
         params: { ids: ids },
     };
 
-    return fetch(`http://api.valantis.store:40000/`, {
+    return fetch(`${URL_VALANTIS}`, {
         method: "POST",
         headers: {
             "content-type": "application/json",
@@ -127,7 +129,7 @@ export const getFields = (
         dataWoParams;
 
     logMe(data);
-    fetch(`http://api.valantis.store:40000/`, {
+    fetch(`${URL_VALANTIS}`, {
         method: "POST",
         headers: {
             "content-type": "application/json",
@@ -162,7 +164,7 @@ export const getFilter = (
 
     logMe("filter params", data);
 
-    return fetch(`http://api.valantis.store:40000/`, {
+    return fetch(`${URL_VALANTIS}`, {
         method: "POST",
         headers: {
             "content-type": "application/json",
