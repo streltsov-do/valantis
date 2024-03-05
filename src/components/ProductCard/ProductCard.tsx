@@ -1,5 +1,5 @@
 import { IntItem } from "../../utils/types";
-import { Div, Id, Num } from "./style/ProductCard";
+import { Div, Id, Num, NumDiv } from "./style/ProductCard";
 
 interface IntProps extends IntItem {
     num: number;
@@ -12,8 +12,7 @@ export const ProductCard = (props: IntProps) => {
     return (
         <Div $width={$width}>
             <Num>
-                Лот
-                <br />#{num + 1}
+                <NumDiv>Лот #{num + 1}</NumDiv>
             </Num>
             <Id>ID: {id}</Id>
             <div>{product}</div>

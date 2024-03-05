@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 import { FilterBlock } from "../../components/FilterBlock/FilterBlock";
+import { Filters } from "../../components/Filters/Filters";
 import Loader from "../../components/Loader/Loader";
 import { ProductCard } from "../../components/ProductCard/ProductCard";
+import { Products } from "../../components/Products/Products";
+import { BREAKPOINT_MOBILE } from "../../utils/constants";
 import { getFilter, getIds, getItemObj, getItems } from "../../utils/functions";
 import { logMe } from "../../utils/testFunctions";
 import {
@@ -10,28 +14,12 @@ import {
     TypeField,
     TypeFieldExt,
 } from "../../utils/types";
-import {
-    BtnPage,
-    Cards,
-    CardsContainer,
-    CardsPage,
-    Div,
-    DivEmpty,
-    EmptyDesc,
-    Filters,
-    FiltersControls,
-    FiltersNotAccepted,
-    FiltersParams,
-    FiltersSubmit,
-    FiltersTitle,
-} from "./style/PageMain";
-
-const HEIGHT_CARDS = "50vh";
+import { Div, DivEmpty, EmptyDesc } from "./style/PageMain";
 
 export const PageMain = () => {
     const [ids, setIds] = useState<IntItem[]>([]);
     const [page, setPage] = useState(0);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState<TypeFieldExt>("none");
     const [product, setProduct] = useState("");
     const [price, setPrice] = useState(0);
@@ -174,84 +162,45 @@ export const PageMain = () => {
         setRequestError(true);
     };
 
+    const isMobile = useMediaQuery({ maxWidth: BREAKPOINT_MOBILE });
+
+    const HEIGHT_CARDS = isMobile ? "30vh" : "50vh";
+
     return (
         <Div>
-            <Filters>
-                <FiltersTitle>
-                    Фильтрация товаров{" "}
-                    {!accepted && (
-                        <FiltersNotAccepted>не применена!</FiltersNotAccepted>
-                    )}
-                </FiltersTitle>
-                <FiltersControls>
-                    <FiltersParams>
-                        {ARR_FILTER.map((val, idx) => (
-                            <FilterBlock
-                                key={idx}
-                                radioTitle={val.radioTitle}
-                                radioValue={val.radioValue}
-                                radioChecked={filter === val.radioValue}
-                                handleChangeRadio={changeFilter}
-                                inputType={val.inputType}
-                                inputValue={val.inputValue}
-                                inputCallback={val.inputCallback}
-                            />
-                        ))}
-                    </FiltersParams>
-                    <FiltersSubmit accepted={accepted} onClick={handleSubmit}>
-                        Применить
-                    </FiltersSubmit>
-                </FiltersControls>
-            </Filters>
-            {ids.length > 0 ? (
-                <>
-                    <CardsPage>Страница №{page + 1}</CardsPage>
-                    <CardsContainer>
-                        <BtnPage
-                            onClick={(e) => handleClick(e, -1)}
-                            disabled={page === 0}
-                            $height={HEIGHT_CARDS}
-                        >
-                            &lt;
-                        </BtnPage>
-                        {loading ? (
-                            <Loader
-                                widthDiv="550px"
-                                heightDiv={HEIGHT_CARDS}
-                                widthLoader={70}
-                            />
-                        ) : (
-                            <Cards>
-                                {ids.map((val, idx) => (
-                                    <ProductCard
-                                        $width="550px"
-                                        key={idx}
-                                        num={page * 50 + idx}
-                                        id={val.id}
-                                        product={val.product}
-                                        price={val.price}
-                                        brand={val.brand}
-                                    />
-                                ))}
-                            </Cards>
-                        )}
-                        <BtnPage
-                            onClick={(e) => handleClick(e, +1)}
-                            $right
-                            $height={HEIGHT_CARDS}
-                            disabled={nextDisabled}
-                        >
-                            &gt;
-                        </BtnPage>
-                    </CardsContainer>
-                </>
+            {loading && ids.length == 0 ? (
+                <Loader
+                    widthDiv={isMobile ? "calc(100vw -60px)" : "550px"}
+                    heightDiv={HEIGHT_CARDS}
+                    widthLoader={70}
+                />
             ) : (
-                <DivEmpty>
-                    <div>Нет элементов для отображения!</div>
-                    <EmptyDesc>
-                        Попробуйте другие параметры фильтрации
-                    </EmptyDesc>
-                </DivEmpty>
+                <>
+                    <Filters
+                        accepted={accepted}
+                        handleSubmit={handleSubmit}
+                        changeFilter={changeFilter}
+                        filterArr={ARR_FILTER}
+                        filterValue={filter}
+                    />
+                    {ids.length > 0 ? (
+                        <Products
+                            page={page}
+                            heightCards={HEIGHT_CARDS}
+                            handleClick={handleClick}
+                            loading={loading}
+                            nextDisabled={nextDisabled}
+                            items={ids}
+                        />
+                    ) : (
+                        <DivEmpty>
+                            <div>Нет элементов для отображения!</div>
+                            <EmptyDesc>
+                                Попробуйте другие параметры фильтрации
+                            </EmptyDesc>
+                        </DivEmpty>
+                    )}
+                </>
             )}
         </Div>
     );

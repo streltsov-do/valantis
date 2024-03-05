@@ -50,7 +50,10 @@ export const getIds = (
             if (response.ok) {
                 return response.json();
             }
-            throw new Error("IDS Response " + response.statusText);
+            throw new Error(
+                "getIds - " +
+                    (response.statusText || " нет сообщения от сервера"),
+            );
         })
         .then((data) => {
             logMe("ids data", data);
@@ -88,7 +91,10 @@ export const getItems = (ids: string[], setRequestError: () => void) => {
             if (response.ok) {
                 return response.json();
             }
-            throw new Error("Items Response " + response.statusText);
+            throw new Error(
+                "getItems -" +
+                    (response.statusText || " нет сообщения от сервера"),
+            );
         })
         .then((data) => {
             logMe("items data", data);
@@ -141,7 +147,10 @@ export const getFields = (
             if (response.ok) {
                 return response.json();
             }
-            throw new Error("Response ERROR:" + response.statusText);
+            throw new Error(
+                "getFields -" + response.statusText ||
+                    " нет сообщения от сервера",
+            );
         })
         .then((data) => {
             logMe(data);
@@ -177,7 +186,10 @@ export const getFilter = (
             if (response.ok) {
                 return response.json();
             }
-            throw new Error("filter Response " + response.statusText);
+            throw new Error(
+                "getFilter -" + response.statusText ||
+                    " нет сообщения от сервера",
+            );
         })
         .then((data) => {
             logMe(data);
