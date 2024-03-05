@@ -8,5 +8,4 @@ export const Div = styled.div`
     font-size: 40px;
     font-weight: bold;
     background-color: antiquewhite;
-    width: 100vw;
 `;
