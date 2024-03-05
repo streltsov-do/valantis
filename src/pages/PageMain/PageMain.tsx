@@ -26,7 +26,8 @@ export const PageMain = () => {
     const [brand, setBrand] = useState("");
     const [accepted, setAccepted] = useState(true);
     const [nextDisabled, setNextDisabled] = useState(false);
-    const [requestError, setRequestError] = useState(false);
+    const [requestError, setRequestError] = useState(0);
+    const [criticalError, setCriticalError] = useState(false);
 
     const getItemsData = (ids: string[]) => {
         getItems(ids, setError).then((data) => {
@@ -93,9 +94,12 @@ export const PageMain = () => {
     }, []);
 
     useEffect(() => {
-        if (requestError) {
-            setRequestError(false);
+        if (requestError > 1) {
+            setRequestError(requestError - 1);
             getData(page);
+        }
+        if (requestError === 1) {
+            setCriticalError(true);
         }
     }, [requestError]);
 
@@ -141,7 +145,7 @@ export const PageMain = () => {
             },
         },
         {
-            radioTitle: "Брэнд",
+            radioTitle: "Бренд",
             radioValue: "brand",
             inputType: "text",
             inputValue: brand,
@@ -153,13 +157,17 @@ export const PageMain = () => {
     ];
 
     const handleSubmit = () => {
+        setCriticalError(false);
+        setRequestError(0);
         setAccepted(true);
         setPage(0);
         getData(page);
     };
 
     const setError = () => {
-        setRequestError(true);
+        if (requestError === 0) {
+            setRequestError(15);
+        }
     };
 
     const isMobile = useMediaQuery({ maxWidth: BREAKPOINT_MOBILE });
@@ -194,9 +202,15 @@ export const PageMain = () => {
                         />
                     ) : (
                         <DivEmpty>
-                            <div>Нет элементов для отображения!</div>
+                            <div>
+                                {criticalError
+                                    ? "Превышено количество перезапросов"
+                                    : "Нет элементов для отображения!"}
+                            </div>
                             <EmptyDesc>
-                                Попробуйте другие параметры фильтрации
+                                {criticalError
+                                    ? "Попробуйте перезагрузить страницу / найти ошибку"
+                                    : "Попробуйте другие параметры фильтрации"}
                             </EmptyDesc>
                         </DivEmpty>
                     )}

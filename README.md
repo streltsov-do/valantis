@@ -1,46 +1,71 @@
-# Getting Started with Create React App
+# Тестовое задание для Valantis
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### 1. Описание задания:
 
-## Available Scripts
+Используя предоставленный апи создать страницу, которая отображает список товаров.
+Для каждого товара должен отображаться его id, название, цена и бренд.
 
-In the project directory, you can run:
+- выводить по 50 товаров на страницу с возможностью постраничного перехода (пагинация) в обе стороны.
+- возможность фильтровать выдачу используя предоставленное апи по названию, цене и бренду
 
-### `yarn start`
+Если API возвращает дубли по id, то следует их считать одним товаром и выводить только первый, даже если другие поля различаются. Если API возвращает ошибку, следует вывести идентификатор ошибки в консоль, если он есть и повторить запрос.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Задание можно выполнять на **React** или на **нативном JS**.
+Оцениваться будет правильность работы сайта и качество кода.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### 2. Ссылка на выполненное задание
 
-### `yarn test`
+- ##### https://streltsov-do.github.io/valantis/
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 3. Описание приложения
 
-### `yarn build`
+Сайт представляет собой SPA, написанное на фреймворке React.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- При заходе на сайт начинается загрузка данных и показывается лоадер:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![readme1](./readme/readme1.jpg)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- После успешно выполненного запроса выводятся карточки продуктов с ID товара, названием, ценой и брендом (если он есть)
 
-### `yarn eject`
+![readme2](./readme/readme2.jpg)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Пример карточки с брендом
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+  ![readme3](./readme/readme3.jpg)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- При неуспешном выполнении запроса в консоль будет выведено сообщение с названием функции, кодом ошибки и сообщением от сервера. При отсутствии сообщения - будет выводиться "нет сообщения от сервера":
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+  ![readme4](./readme/readme4.jpg)
 
-## Learn More
+![readme5](./readme/readme5.jpg)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Можно отфильтровать товары по выбранному фильтру. Для этого нужно выбрать категорию фильтрации, указать параметр фильтрации и нажать кнопку применить:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+  ![readme6](./readme/readme6.jpg)
+
+- Пример фильтрации по продукту:
+
+  ![readme7](./readme/readme7.jpg)
+
+- Пример фильтрации по цене:
+
+  ![readme8](./readme/readme8.jpg)
+
+- Пример фильтрации по бренду 
+
+  ![readme9](./readme/readme9.jpg)
+
+- При количестве товаров больше 50 - будет возможность перейти на следующую страницу:
+
+  ![readme10](./readme/readme10.jpg)
+
+  
+
+- При нахождении на последней/первой странице - кнопка перехода вперёд/назад будет заблокирована:
+
+  ![readme11](./readme/readme11.jpg)
+
+- При ширине экрана меньше 685 пикселей - применяется мобильная версия
+
+  ![readme12](./readme/readme12.jpg)
+

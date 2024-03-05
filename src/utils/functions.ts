@@ -16,6 +16,10 @@ const add0toDate = (val: string | number) => {
 
 const URL_VALANTIS = `https://api.valantis.store:41000/`;
 
+const setErrorMessage = (name: string, status: number, text: string) => {
+    return `${name}, код ошибки [${status}], ${text || "нет сообщения от сервера"}`;
+};
+
 const getAuth = () => {
     const date = new Date();
     const month = add0toDate(date.getMonth() + 1);
@@ -51,8 +55,7 @@ export const getIds = (
                 return response.json();
             }
             throw new Error(
-                "getIds - " +
-                    (response.statusText || " нет сообщения от сервера"),
+                setErrorMessage("getIds", response.status, response.statusText),
             );
         })
         .then((data) => {
@@ -92,8 +95,11 @@ export const getItems = (ids: string[], setRequestError: () => void) => {
                 return response.json();
             }
             throw new Error(
-                "getItems -" +
-                    (response.statusText || " нет сообщения от сервера"),
+                setErrorMessage(
+                    "getItems",
+                    response.status,
+                    response.statusText,
+                ),
             );
         })
         .then((data) => {
@@ -148,8 +154,11 @@ export const getFields = (
                 return response.json();
             }
             throw new Error(
-                "getFields -" + response.statusText ||
-                    " нет сообщения от сервера",
+                setErrorMessage(
+                    "getFields",
+                    response.status,
+                    response.statusText,
+                ),
             );
         })
         .then((data) => {
@@ -187,8 +196,11 @@ export const getFilter = (
                 return response.json();
             }
             throw new Error(
-                "getFilter -" + response.statusText ||
-                    " нет сообщения от сервера",
+                setErrorMessage(
+                    "getFilter",
+                    response.status,
+                    response.statusText,
+                ),
             );
         })
         .then((data) => {
