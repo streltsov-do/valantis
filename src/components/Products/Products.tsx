@@ -26,7 +26,7 @@ export const Products = (props: IntProps) => {
             <Container>
                 <BtnPage
                     onClick={(e) => handleClick(e, -1)}
-                    disabled={page === 0}
+                    disabled={page === 0 || loading}
                     $height={heightCards}
                 >
                     &lt;
@@ -56,7 +56,7 @@ export const Products = (props: IntProps) => {
                     onClick={(e) => handleClick(e, +1)}
                     $right
                     $height={heightCards}
-                    disabled={nextDisabled}
+                    disabled={nextDisabled || loading}
                 >
                     &gt;
                 </BtnPage>

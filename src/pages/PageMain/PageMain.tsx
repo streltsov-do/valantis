@@ -177,47 +177,39 @@ export const PageMain = () => {
 
     return (
         <Div>
-            {/* {loading && ids.length === 0 ? (
-                <Loader
-                    widthDiv={isMobile ? "calc(100vw -60px)" : "550px"}
-                    heightDiv={HEIGHT_CARDS}
-                    widthLoader={70}
+            <>
+                <Filters
+                    accepted={accepted}
+                    handleSubmit={handleSubmitFilters}
+                    changeFilter={changeFilter}
+                    filterArr={ARR_FILTER}
+                    filterValue={filter}
+                    loading={loading}
                 />
-            ) : ( */}
-                <>
-                    <Filters
-                        accepted={accepted}
-                        handleSubmit={handleSubmitFilters}
-                        changeFilter={changeFilter}
-                        filterArr={ARR_FILTER}
-                        filterValue={filter}
+                {ids.length > 0 || loading ? (
+                    <Products
+                        page={page}
+                        heightCards={HEIGHT_CARDS}
+                        handleClick={handleClick}
                         loading={loading}
+                        nextDisabled={nextDisabled}
+                        items={ids}
                     />
-                    {(ids.length > 0 || loading) ? (
-                        <Products
-                            page={page}
-                            heightCards={HEIGHT_CARDS}
-                            handleClick={handleClick}
-                            loading={loading}
-                            nextDisabled={nextDisabled}
-                            items={ids}
-                        />
-                    ) : (
-                        <DivEmpty>
-                            <div>
-                                {criticalError
-                                    ? "Превышено количество перезапросов"
-                                    : "Нет элементов для отображения!"}
-                            </div>
-                            <EmptyDesc>
-                                {criticalError
-                                    ? "Попробуйте перезагрузить страницу / найти ошибку"
-                                    : "Попробуйте другие параметры фильтрации"}
-                            </EmptyDesc>
-                        </DivEmpty>
-                    )}
-                </>
-            {/* )} */}
+                ) : (
+                    <DivEmpty>
+                        <div>
+                            {criticalError
+                                ? "Превышено количество перезапросов"
+                                : "Нет элементов для отображения!"}
+                        </div>
+                        <EmptyDesc>
+                            {criticalError
+                                ? "Попробуйте перезагрузить страницу / найти ошибку"
+                                : "Попробуйте другие параметры фильтрации"}
+                        </EmptyDesc>
+                    </DivEmpty>
+                )}
+            </>
         </Div>
     );
 };

@@ -16,6 +16,8 @@ const add0toDate = (val: string | number) => {
 
 const URL_VALANTIS = `https://api.valantis.store:41000/`;
 
+const ABORT_TIMEOUT = 10000;
+
 const setErrorMessage = (name: string, status: number, text: string) => {
     return `${name}, код ошибки [${status}], ${text || "нет сообщения от сервера"}`;
 };
@@ -40,6 +42,8 @@ export const getIds = (
         action: "get_ids",
         params: { offset: offset, limit: limit },
     };
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), ABORT_TIMEOUT);
 
     return fetch(`${URL_VALANTIS}`, {
         method: "POST",
@@ -48,8 +52,10 @@ export const getIds = (
             "X-Auth": getAuth(),
         },
         body: JSON.stringify(data),
+        signal: controller.signal,
     })
         .then((response) => {
+            clearTimeout(timeoutId);
             logMe("ids response", response);
             if (response.ok) {
                 return response.json();
@@ -70,6 +76,7 @@ export const getIds = (
             return dataDefault;
         })
         .catch((error) => {
+            clearTimeout(timeoutId);
             console.error(error);
             setRequestError();
         });
@@ -80,6 +87,8 @@ export const getItems = (ids: string[], setRequestError: () => void) => {
         action: "get_items",
         params: { ids: ids },
     };
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), ABORT_TIMEOUT);
 
     return fetch(`${URL_VALANTIS}`, {
         method: "POST",
@@ -88,8 +97,10 @@ export const getItems = (ids: string[], setRequestError: () => void) => {
             "X-Auth": getAuth(),
         },
         body: JSON.stringify(data),
+        signal: controller.signal,
     })
         .then((response) => {
+            clearTimeout(timeoutId);
             logMe("items response", response);
             if (response.ok) {
                 return response.json();
@@ -114,6 +125,7 @@ export const getItems = (ids: string[], setRequestError: () => void) => {
             return dataDefault;
         })
         .catch((error) => {
+            clearTimeout(timeoutId);
             console.error(error);
             setRequestError();
         });
@@ -132,6 +144,8 @@ export const getFields = (
     const dataWoParams = {
         action: "get_fields",
     };
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), ABORT_TIMEOUT);
 
     const data =
         (field !== undefined &&
@@ -148,8 +162,10 @@ export const getFields = (
             "X-Auth": getAuth(),
         },
         body: JSON.stringify(data),
+        signal: controller.signal,
     })
         .then((response) => {
+            clearTimeout(timeoutId);
             if (response.ok) {
                 return response.json();
             }
@@ -165,6 +181,7 @@ export const getFields = (
             logMe(data);
         })
         .catch((error) => {
+            clearTimeout(timeoutId);
             console.error(error);
             setRequestError();
         });
@@ -179,6 +196,8 @@ export const getFilter = (
         action: "filter",
         params: { [field]: value },
     };
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), ABORT_TIMEOUT);
 
     logMe("filter params", data);
 
@@ -189,8 +208,10 @@ export const getFilter = (
             "X-Auth": getAuth(),
         },
         body: JSON.stringify(data),
+        signal: controller.signal,
     })
         .then((response) => {
+            clearTimeout(timeoutId);
             logMe("filter response", response);
             if (response.ok) {
                 return response.json();
