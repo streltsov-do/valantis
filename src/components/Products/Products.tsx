@@ -1,3 +1,5 @@
+import { useMediaQuery } from "react-responsive";
+import { BREAKPOINT_MOBILE } from "../../utils/constants";
 import { IntItem } from "../../utils/types";
 import Loader from "../Loader/Loader";
 import { ProductCard } from "../ProductCard/ProductCard";
@@ -15,6 +17,9 @@ interface IntProps {
 export const Products = (props: IntProps) => {
     const { page, heightCards, handleClick, loading, nextDisabled, items } =
         props;
+
+    const isMobile = useMediaQuery({ maxWidth: BREAKPOINT_MOBILE });
+
     return (
         <>
             <CardsPage>Страница №{page + 1}</CardsPage>
@@ -28,7 +33,7 @@ export const Products = (props: IntProps) => {
                 </BtnPage>
                 {loading ? (
                     <Loader
-                        widthDiv="550px"
+                        widthDiv={isMobile ? "250px" : "550px"}
                         heightDiv={heightCards}
                         widthLoader={70}
                     />

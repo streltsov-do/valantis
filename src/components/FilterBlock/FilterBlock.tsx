@@ -1,4 +1,3 @@
-import { InputType } from "zlib";
 import { Div, InputValue, LabeledInput, LabelRadio } from "./style/FilterBlock";
 
 interface IntProps {
@@ -10,6 +9,7 @@ interface IntProps {
     inputValue?: string | number;
     inputCallback?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     inputPlaceholder?: string;
+    loading: boolean;
 }
 
 export const FilterBlock = (props: IntProps) => {
@@ -22,6 +22,7 @@ export const FilterBlock = (props: IntProps) => {
         inputValue,
         inputCallback,
         inputPlaceholder,
+        loading,
     } = props;
 
     const idRadio = `filterBlock__${radioValue}__Radio`;
@@ -37,6 +38,7 @@ export const FilterBlock = (props: IntProps) => {
                     value={radioValue}
                     onChange={handleChangeRadio}
                     checked={radioChecked}
+                    disabled={loading}
                 />
                 <LabelRadio htmlFor={idRadio} maxContent={inputType === ""}>
                     {radioTitle}
@@ -48,7 +50,7 @@ export const FilterBlock = (props: IntProps) => {
                     type={inputType}
                     value={inputValue}
                     onChange={inputCallback}
-                    disabled={!radioChecked}
+                    disabled={!radioChecked || loading}
                     placeholder={inputPlaceholder}
                     min={0}
                 />

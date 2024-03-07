@@ -70,7 +70,7 @@ export const getIds = (
             return dataDefault;
         })
         .catch((error) => {
-            console.log(error);
+            console.error(error);
             setRequestError();
         });
 };
@@ -114,7 +114,7 @@ export const getItems = (ids: string[], setRequestError: () => void) => {
             return dataDefault;
         })
         .catch((error) => {
-            console.log(error);
+            console.error(error);
             setRequestError();
         });
 };
@@ -165,7 +165,7 @@ export const getFields = (
             logMe(data);
         })
         .catch((error) => {
-            console.log(error);
+            console.error(error);
             setRequestError();
         });
 };
@@ -208,7 +208,7 @@ export const getFilter = (
             return data;
         })
         .catch((error) => {
-            console.log(error);
+            console.error(error);
             setRequestError();
         });
 };

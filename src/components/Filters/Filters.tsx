@@ -37,10 +37,11 @@ interface IntProps {
           }
     )[];
     filterValue: TypeFieldExt;
+    loading : boolean;
 }
 
 export const Filters = (props: IntProps) => {
-    const { accepted, handleSubmit, changeFilter, filterArr, filterValue } =
+    const { accepted, handleSubmit, changeFilter, filterArr, filterValue, loading } =
         props;
 
     return (
@@ -61,10 +62,11 @@ export const Filters = (props: IntProps) => {
                             inputType={val.inputType}
                             inputValue={val.inputValue}
                             inputCallback={val.inputCallback}
+                            loading={loading}
                         />
                     ))}
                 </Params>
-                <Submit accepted={accepted} onClick={handleSubmit}>
+                <Submit accepted={accepted} onClick={handleSubmit} disabled={loading}>
                     Применить
                 </Submit>
             </Controls>

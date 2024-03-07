@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import { FilterBlock } from "../../components/FilterBlock/FilterBlock";
 import { Filters } from "../../components/Filters/Filters";
-import Loader from "../../components/Loader/Loader";
-import { ProductCard } from "../../components/ProductCard/ProductCard";
 import { Products } from "../../components/Products/Products";
 import { BREAKPOINT_MOBILE } from "../../utils/constants";
 import { getFilter, getIds, getItemObj, getItems } from "../../utils/functions";
@@ -32,7 +29,7 @@ export const PageMain = () => {
     const getItemsData = (ids: string[]) => {
         getItems(ids, setError).then((data) => {
             let obj: IntItem[] = [];
-            if (data && data.result) {
+            if (data && data.result && data.result.length > 0) {
                 logMe("data.result", data.result);
                 obj = getItemObj(data.result).slice(0, 50);
                 setIds(obj);
@@ -72,7 +69,7 @@ export const PageMain = () => {
         }
         if (filter !== FieldExtNone) {
             getFilter(filter, value, setError).then((data) => {
-                if (data && data.result) {
+                if (data && data.result && data.result.length > 0) {
                     getItemsData(
                         data.result.slice(pageData * 50, pageData * 50 + 60),
                     );
@@ -81,6 +78,9 @@ export const PageMain = () => {
                     } else {
                         setNextDisabled(false);
                     }
+                } else {
+                    setIds([]);
+                    setLoading(false);
                 }
             });
         } else {
@@ -98,10 +98,10 @@ export const PageMain = () => {
             setRequestError(requestError - 1);
             getData(page);
         }
-        if (requestError === 1) {
+        if (requestError === 1 && !loading) {
             setCriticalError(true);
         }
-    }, [requestError]);
+    }, [requestError, loading]);
 
     const handleClick = (
         e: React.MouseEvent<HTMLButtonElement>,
@@ -156,7 +156,8 @@ export const PageMain = () => {
         },
     ];
 
-    const handleSubmit = () => {
+    const handleSubmitFilters = () => {
+        setLoading(true);
         setCriticalError(false);
         setRequestError(0);
         setAccepted(true);
@@ -166,7 +167,7 @@ export const PageMain = () => {
 
     const setError = () => {
         if (requestError === 0) {
-            setRequestError(15);
+            setRequestError(5);
         }
     };
 
@@ -176,22 +177,23 @@ export const PageMain = () => {
 
     return (
         <Div>
-            {loading && ids.length == 0 ? (
+            {/* {loading && ids.length === 0 ? (
                 <Loader
                     widthDiv={isMobile ? "calc(100vw -60px)" : "550px"}
                     heightDiv={HEIGHT_CARDS}
                     widthLoader={70}
                 />
-            ) : (
+            ) : ( */}
                 <>
                     <Filters
                         accepted={accepted}
-                        handleSubmit={handleSubmit}
+                        handleSubmit={handleSubmitFilters}
                         changeFilter={changeFilter}
                         filterArr={ARR_FILTER}
                         filterValue={filter}
+                        loading={loading}
                     />
-                    {ids.length > 0 ? (
+                    {(ids.length > 0 || loading) ? (
                         <Products
                             page={page}
                             heightCards={HEIGHT_CARDS}
@@ -215,7 +217,7 @@ export const PageMain = () => {
                         </DivEmpty>
                     )}
                 </>
-            )}
+            {/* )} */}
         </Div>
     );
 };
